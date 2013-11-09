@@ -1,4 +1,4 @@
-import praw
+#import praw
 from threading import Thread
 from SocketServer import ThreadingMixIn
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
@@ -16,10 +16,10 @@ class Handler(BaseHTTPRequestHandler):
 			self.wfile.write("<hr>")
 		else:
 			print "you\'re at home!"
-		r = praw.Reddit(user_agent='redditrap')
-		submissions = r.get_subreddit('funny').get_hot(limit=5)
-		for post in submissions:
-			self.wfile.write(str(post)+"\n")
+		#r = praw.Reddit(user_agent='redditrap')
+		#submissions = r.get_subreddit('funny').get_hot(limit=5)
+		#for post in submissions:
+		#	self.wfile.write(str(post)+"\n")
 
 	def do_POST(self):
 		postvars = self.parse_POST()
