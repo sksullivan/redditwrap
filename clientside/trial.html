@@ -11,24 +11,44 @@
 	<div id = "main">
 		<div id = "left">
 			<button type="button" onclick = loadPosts(); >click to load posts</button>
-			<div class="contentBox">
-				<div class = "contentBoxLeft">
-					<div class="titleBox">
-						<div class="upDown">
-							<div class="upvote"></div>
-							<div class="downvote"></div>
+			<div class=imgContentBox>
+				<div class =contentBoxLeft>
+					<div class=titleBox>
+						<div class=upDown>
+							<div class=upvote></div>
+							<div class=downvote></div>
 						</div>
-						<div class = "title">
-							pootis
+						<div class=title>
+							<p class=paragraphTitle>Title Goes Here</p>
+							<p class=paragraphSubmitted>Submitted by User at Time</p>
 						</div>
 					</div>
-					<div class="others"> 		
+					<div class=imgOthers>
+						<div id="123123123" class="comment" onclick=viewComments(this)>Total Comments:10000</div>
 					</div>
 				</div>
-				<div class="imgBox">
-
-				</div>
+					<div class=imgBox><img src=a.png></img></div>
 			</div>
+
+			<div class=selfContentBox>
+				<div class =contentBoxLeft>
+					<div class=titleBox>
+						<div class=upDown>
+							<div class=upvote></div>
+							<div class=downvote></div>
+						</div>
+						<div class=title>
+							<p class=paragraphTitle>Title Goes Here</p>
+							<p class=paragraphSubmitted>Submitted by User at Time</p>
+						</div>
+					</div>
+					<div class=selfOthers>
+						<div id="123123123" class="comment" onclick=viewComments(this)>Total Comments:10000</div>
+					</div>
+				</div>
+					<div class=selfBox>hey<br/>there is jsut a ton of text here!<br/></div>
+			</div>
+
 
 
 		</div>
