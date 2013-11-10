@@ -1,38 +1,18 @@
 body{
-	background-color:#f7f7f8;
+	background-color:#f6f9fc;
+	margin: auto;
 }
-.contentBox{
+#top{
+	float:top;
+	min-height: 80px;
+	/*background-color: #cee3f8;*/
+	min-width: 100%;
+}
+#main{
+	min-height:450px;
 	width:100%;
-	height:300px;
-	border-radius:10px;
-	background-color: #e9e9e9;
-	margin-top:10px;
-	margin-bottom:10px;
-	min-width: 700px;
-	overflow-x:visible;
-}
-.contentBoxLeft{
-	float:left;
-	width:50%;
-}
-.downvote{
-	height:50px;
-	border-bottom-left-radius:8px;
-	border-top-right-radius: 15px;
-	width:50px;
-	background-color: #a5c1ff;
-}
-.downvote:hover{
-	background-color: #9494ff;
-}
-#focus{
-	padding: 10px;
-}
-.imgBox{
-	float:right;
-	width:50%;
-	height:300px;
-	background-color: #333333;
+	min-width: 900px;
+	overflow:hidden;
 }
 #left{
 	float:left;
@@ -45,16 +25,78 @@ body{
 	width: -webkit-calc(100%-210px);
 	width: -o-calc(100%-210px);
 	min-width:700px;
-	background-color:#f3f3f3;
+	/*
+	background-color:#f3f3f3;*/
+	background-color:#f6f9fc;
 	overflow-y:scroll;
 
 }
-#main{
-	min-height:450px;
+
+.contentBox{
 	width:100%;
-	min-width: 900px;
-	overflow:hidden;
+	height:300px;
+	/*background-color: #e9e9e9;*/
+	background-color:#f6f9fc;
+	margin:auto;
+	margin-top:30px;
+	margin-bottom:30px;
+	min-width: 700px;
+	overflow-x:hidden;
+	overflow-y:hidden;
 }
+.contentBoxLeft{
+	float:left;
+	width:60%;
+}
+.upvote{
+
+	width: 0px;
+	height: 0px;
+	border-style: solid;
+	border-width: 50px 0 0 50px;
+	border-color: transparent transparent transparent #ffc47e;
+	
+	/*
+	width: 0px;
+	height: 0px;
+	border-style: solid;
+	border-width: 0 0 50px 50px;
+	border-color: #f7f7f8 #f7f7f8 #ffc47e #f7f7f8;
+	*/
+}
+.upvote:hover{
+	background-color: #ff6600;
+}
+
+.downvote{
+	
+	width: 0px;
+	height: 0px;
+	border-style: solid;
+	border-width: 50px 50px 0 0;
+	border-color: #a5c1ff transparent transparent transparent;
+		
+/*
+	width: 0px;
+	height: 0px;
+	border-style: solid;
+	border-width: 0 50px 50px 0;
+	border-color: #f7f7f8 #007bff #f7f7f8 #f7f7f8;
+*/
+}
+.downvote:hover{
+	background-color: #9494ff;
+}
+#focus{
+	padding: 10px;
+}
+.imgBox{
+	float:right;
+
+
+	background-color: red;
+}
+
 .min:hover{
 background: #5584a8; /* Old browsers */
 background: -moz-linear-gradient(-45deg, #5584a8 0%, #7db9e8 98%); /* FF3.6+ */
@@ -129,25 +171,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5584a8', end
 	width: -webkit-calc(100%-50px);
 	width: -o-calc(100%-50px);
 }
-#top{
-	float:top;
-	min-height: 80px;
-	background-color: #cee3f8;
-	min-width: 100%;
-}
+
 .upDown{
 	float:left;
 	height:100px;
 	width:50px;
 }
-.upvote{
-	height:50px;
-	border-top-left-radius:8px;
-	border-bottom-right-radius: 15px;
-	background-color: #ffc47e;
-	width:50px;
-}
-.upvote:hover{
-	background-color: #ff6600;
-}
+
 

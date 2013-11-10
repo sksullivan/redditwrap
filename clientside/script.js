@@ -155,6 +155,13 @@ function hideSide(elem1){
 
 
 
+function viewComments(elem){
+	var elemId = $(elem).attr("id");
+	alert(elemId);
+}
+
+
+
 /*functions to help display in the main window
 *everything below here should deal with the left side of the page
 *
