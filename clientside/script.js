@@ -164,15 +164,45 @@ function hideSide(elem1){
 
 //function for making a content box
 //currently makes generic box, nothing special ATM
-function makeContentBox(theTitle, theSubreddit){
+function makeContentBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, theUser, theTime){
 	var retu;
-	retu = "<div class=\"contentBox\">";
-	retu += "<div class =\"contentBoxLeft\">";
-	retu += "<div class=\"titleBox\">"+ theTitle + "<br/>" +theSubreddit;
-	retu += "<div class=\"upvote\"></div>";
-	retu += "<div class=\"downvote\"></div></div>";
-	retu += "<div class=\"others\"></div></div>";
-	retu += "<div class=\"imgBox\"></div></div>";
+	retu = "<div class=\"contentBox\">";//outtermost wrapper
+	retu += "<div class =\"contentBoxLeft\">";//wrapper for left part of post
+	retu += "<div class=\"titleBox\">";//wrapper for title, up and down
+	retu += "<div class=\"upDown\">";//wrapper for up/down arrows
+	retu += "<div class=\"upvote\"></div>";//closes upvote
+	retu += "<div class=\"downvote\"></div></div>";//closes downvote and upDown
+	retu += "<div class=\"title\">"+theTitle + "<br/>";
+	retu += "Submitted by " + theUser + " " + timeAgo(theTime);
+	retu += "</div></div>";//closes title and titlebox
+	retu += "<div class=\"others\"></div></div>";//closes others and contentBoxLeft
+	retu += "<div class=\"imgBox\"><img src="+theUrl+"></img></div></div>";//closes imgbox and contentBox
+	return retu;
+}
+
+function timeAgo(redTime){
+	var currentTime = new Date();
+	var offset = Math.floor(currentTime.getTime()/1000)-redTime; //difference in real time - reddits time
+	var retu = "";
+	if(offset < 60) //seconds
+		retu = "less than a minue ago";
+	else if(offset < 60*60){ //minutes
+		offset = Math.floor(offset/60);
+		retu = "about " + offset;
+			if(offset == 1)
+				retu += " minute ago";
+			else
+				retu += "minutes ag0";
+	} 
+	else if(offset < 60*60*24){ //hours
+		offset = Math.floor(offset/60/60);
+		retu = offset;
+			if(offset == 1)
+				retu += " hour ago";
+			else
+				retu += " hours ago";
+
+	}
 	return retu;
 }
 
@@ -191,9 +221,16 @@ function loadLeft(data){
 	var pootis = " ";
 	for(var i = 0; i < data.length; i++){
 		var theTitle=data[i].title;
+		var theUrl = data[i].url;
+		var theNumComments = data[i].num_comments;
+		var isNSFW = data[i].nsfw;
+		var theUser = data[i].user;
 		var theSubreddit = data[i].subreddit;
-		pootis += makeContentBox(theTitle, theSubreddit);
+		var theTime = data[i].time;
+
+		pootis += makeContentBox(theTitle, theUrl, theNumComments,theSubreddit, isNSFW, theUser,  theTime);
 	}
+	pootis = "<button type=\"button\" onclick = loadPosts(); >click to load posts</button>" + pootis;
 	document.getElementById("left").innerHTML = pootis;
 }
 

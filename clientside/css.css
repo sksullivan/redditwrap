@@ -1,64 +1,36 @@
-#right{
-	float:right;
-	text-align:center;
-	color:#336699;
-	width:200px;
-}
-#sort, #submit, #subscribe, #sidebar, #switch{
-	min-height:50px;
-	border-radius: 4px;
-	background-color: #e9e9e9;
-	height:5%;
-	overflow-y:scroll;
-}
-#subreddits{
-	min-height: 200px;
-	border-radius: 4px;
-	height:55%;
-	background-color: #f3f3f3;
-	overflow-y:scroll;
-}
-.min:hover{
-background: #5584a8; /* Old browsers */
-background: -moz-linear-gradient(-45deg, #5584a8 0%, #7db9e8 98%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#5584a8), color-stop(98%,#7db9e8)); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(-45deg, #5584a8 0%,#7db9e8 98%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(-45deg, #5584a8 0%,#7db9e8 98%); /* Opera 11.10+ */
-background: -ms-linear-gradient(-45deg, #5584a8 0%,#7db9e8 98%); /* IE10+ */
-background: linear-gradient(135deg, #5584a8 0%,#7db9e8 98%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5584a8', endColorstr='#7db9e8',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-}
-
-#s1{
-	margin:5px;
-	border-radius:8px;
-	padding: 10px;
-	background-color: #eee3f8;
-}
-#s1:hover{
-	background-color: #3fe216;
-}
-
-#sr{
-	margin:2px;
-	border-radius: 8px;
-	height:100px;
-	width:190px;
-	background-color: #e9e9e9;
-}
-
-#focus{
-	padding: 10px;
-}
-
 body{
 	background-color:#cee3f8;
 }
-#top{
-	float:top;
-	min-height: 80px;
-	background-color: #cee3f8;
-	min-width: 100%;
+.contentBox{
+	width:100%;
+	height:300px;
+	border-radius:10px;
+	background-color: #e9e9e9;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.contentBoxLeft{
+	float:left;
+	width:50%;
+}
+.downvote{
+	height:50px;
+	border-bottom-left-radius:8px;
+	border-top-right-radius: 15px;
+	width:50px;
+	background-color: #a5c1ff;
+}
+.downvote:hover{
+	background-color: #9494ff;
+}
+#focus{
+	padding: 10px;
+}
+.imgBox{
+	float:right;
+	width:50%;
+	height:300px;
+	background-color: #333333;
 }
 #left{
 	float:left;
@@ -81,38 +53,81 @@ body{
 	min-width: 610px;
 	overflow:hidden;
 }
-
-.titleBox{
-	width:100%;
-	height:100px;
-	background-color: #ffffff;
-
+.min:hover{
+background: #5584a8; /* Old browsers */
+background: -moz-linear-gradient(-45deg, #5584a8 0%, #7db9e8 98%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#5584a8), color-stop(98%,#7db9e8)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(-45deg, #5584a8 0%,#7db9e8 98%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(-45deg, #5584a8 0%,#7db9e8 98%); /* Opera 11.10+ */
+background: -ms-linear-gradient(-45deg, #5584a8 0%,#7db9e8 98%); /* IE10+ */
+background: linear-gradient(135deg, #5584a8 0%,#7db9e8 98%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5584a8', endColorstr='#7db9e8',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
-
-.contentBoxLeft{
-	float:left;
-	width:50%;
-}
-
 .others{
 	width:100%;
 	height:200px;
 }
-
-.imgBox{
+#right{
 	float:right;
-	width:50%;
-	height:300px;
-	background-color: #333333;
+	text-align:center;
+	color:#336699;
+	width:200px;
+}
+#s1{
+	margin:5px;
+	border-radius:8px;
+	padding: 10px;
+	background-color: #eee3f8;
+}
+#s1:hover{
+	background-color: #3fe216;
 }
 
-.contentBox{
-	width:100%;
-	height:300px;
-	border-radius:10px;
+#sr{
+	margin:2px;
+	border-radius: 8px;
+	height:100px;
+	width:190px;
 	background-color: #e9e9e9;
-	margin-top:10px;
-	margin-bottom:10px;
+}
+#sort, #submit, #subscribe, #sidebar, #switch{
+	min-height:50px;
+	border-radius: 4px;
+	background-color: #e9e9e9;
+	height:5%;
+	overflow-y:scroll;
+}
+#subreddits{
+	min-height: 200px;
+	border-radius: 4px;
+	height:55%;
+	background-color: #f3f3f3;
+	overflow-y:scroll;
+}
+.titleBox{
+	min-width: 100%;
+	width:100%;
+	height:100px;
+	max-height:100px;
+	background-color: #ffffff;
+}
+.title{
+	float:right;
+	width: calc(100% - 50px);
+	width:-moz-calc(100%-50px);
+	width: -webkit-calc(100%-50px);
+	width: -o-calc(100%-50px);
+}
+#top{
+	float:top;
+	min-height: 80px;
+	background-color: #cee3f8;
+	min-width: 100%;
+}
+.upDown{
+	float:left;
+	height:100px;
+	width:50px;
 }
 .upvote{
 	height:50px;
@@ -123,16 +138,5 @@ body{
 }
 .upvote:hover{
 	background-color: #ff6600;
-}
-
-.downvote{
-	height:50px;
-	border-bottom-left-radius:8px;
-	border-top-right-radius: 15px;
-	width:50px;
-	background-color: #a5c1ff;
-}
-.downvote:hover{
-	background-color: #9494ff;
 }
 
