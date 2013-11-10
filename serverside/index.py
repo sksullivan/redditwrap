@@ -4,6 +4,7 @@ from SocketServer import ThreadingMixIn
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 from urlparse import parse_qs,urlparse
 from cgi import parse_header, parse_multipart
+import sys
 from pprint import pprint
 import json
 
@@ -32,14 +33,13 @@ class Handler(BaseHTTPRequestHandler):
 					'time': post.created_utc,
 					'nsfw': post.over_18
 				})
-			pprint(json.dump(res))
+			self.wfile.write(json.dumps(res))
 		elif self.path=="/kill":
 			sys.exit(0)
 
 	def do_POST(self):
 		postvars = self.parse_POST()
-		print postvars;
-		return postvars;
+		print postvars
 
 	def parse_POST(self):
 		ctype, pdict = parse_header(self.headers['content-type'])
@@ -48,7 +48,7 @@ class Handler(BaseHTTPRequestHandler):
 		elif ctype == 'application/x-www-form-urlencoded':
 			length = int(self.headers['content-length'])
 			postvars = parse_qs(
-			self.rfile.read(length), 
+			self.rfile.read(length),
 			keep_blank_values=1)
 		else:
 			postvars = {}
@@ -59,7 +59,7 @@ class ThreadingHTTPServer(ThreadingMixIn, HTTPServer):
 	pass
 
 def serve_on_port(port):
-	server = ThreadingHTTPServer(("172.16.96.184",port), Handler)
+	server = ThreadingHTTPServer(("172.16.241.188",port), Handler)
 	server.serve_forever()
 
 Thread(target=serve_on_port, args=[1111]).start()
