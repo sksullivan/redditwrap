@@ -164,11 +164,11 @@ function hideSide(elem1){
 
 //function for making a content box
 //currently makes generic box, nothing special ATM
-function makeContentBox(){
+function makeContentBox(theTitle, theSubreddit){
 	var retu;
 	retu = "<div class=\"contentBox\">";
 	retu += "<div class =\"contentBoxLeft\">";
-	retu += "<div class=\"titleBox\">";
+	retu += "<div class=\"titleBox\">"+ theTitle + "<br/>" +theSubreddit;
 	retu += "<div class=\"upvote\"></div>";
 	retu += "<div class=\"downvote\"></div></div>";
 	retu += "<div class=\"others\"></div></div>";
@@ -179,19 +179,23 @@ function makeContentBox(){
 //function that will grab the posts from the python server
 //sends subReddit, sortBy to ipAddr
 function loadPosts(){
-	$.getJSON
+	//var addr = ipAddr + "/posts";
+	$.getJSON("http://" + ipAddr + "/posts", function(data){
+		loadLeft(data);
+	});
 }
 
-
-function loadLeft(){
-	var title = "Welcome to reddit! <br/>";;
-	for(var i = 0; i < 25; i++){
-		title += makeContentBox();
+//function that will parse JSON data
+//then it creates the content boxes
+function loadLeft(data){
+	var pootis = " ";
+	for(var i = 0; i < data.length; i++){
+		var theTitle=data[i].title;
+		var theSubreddit = data[i].subreddit;
+		pootis += makeContentBox(theTitle, theSubreddit);
 	}
-	document.getElementById("left").innerHTML = title;
-
+	document.getElementById("left").innerHTML = pootis;
 }
-
 
 function loadSelfPost(){
 
