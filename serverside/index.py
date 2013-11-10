@@ -17,11 +17,12 @@ class Handler(BaseHTTPRequestHandler):
 		self.end_headers()
 		params = parse_qs(self.path[self.path.find('?')+1:])
 		r = praw.Reddit(user_agent='redditwrap')
-		
-		if self.path=="/singlepost":
-			escapedUrl = params['url'][0]
-			unescapedUrl = #unescape the url
-			print r.get_submission(url=unescapedUrl)
+
+		if self.path.find("/singlepost") != -1:
+			#escapedUrl = params['url'][0]
+			#unescapedUrl = #unescape the url
+			#print r.get_submission(url=unescapedUrl)
+			self.wfile.write(params['url'][0])
 			pass
 
 		if self.path.find("/sub") != -1:
