@@ -233,7 +233,7 @@ function timeAgo(redTime){
 //sends subReddit, sortBy to ipAddr
 function loadPosts(){
 	//var addr = ipAddr + "/posts";
-	$.getJSON("http://" + ipAddr + "/posts", function(data){
+	$.getJSON("http://" + ipAddr + "/?req=posts", function(data){
 		loadLeft(data);
 	});
 }
