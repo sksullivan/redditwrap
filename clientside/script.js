@@ -258,20 +258,27 @@ function makeImageBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, th
 	retu += "<div class=\"upDown\">";//wrapper for up/down arrows
 	retu += "<div class=\"upvote\"></div>";//closes upvote
 	retu += "<div class=\"downvote\"></div></div>";//closes downvote and upDown
-	retu += "<div class=\"title\"><p class=\"paragraphTitle\">"+theTitle + "</p>";//close titleParagraph
-	retu += "<p class=\"paragraphSubmitted\">Submitted by " + theUser + " " + timeAgo(theTime);
-	retu += "</p></div></div>";//closes title and titlebox
+	retu += "<div class=\"title\"><div class=\"paragraphTitle\">"+theTitle + "</div>";//close titleParagraph
+	retu += "<div class=\"paragraphSubmitted\">Submitted by " + theUser + " " + timeAgo(theTime);
+	retu += "</div></div></div>";//closes title and titlebox
 	retu += "<div class=\"imgOthers\">";
-	retu += "<div id="+thePost+" class=\"comment\"onclick=viewComments(this)>Total Comments: "+theNumComments+"</div>";
-	retu +="</div></div>";//closes others and contentBoxLeft
+	retu += "<div id="+thePost+" class=\"comment\"onclick=viewComments(this)>";
+		if(theNumComments == 1){
+			retu+="1 total comment<br/>";
+		}else{
+			retu+=theNumComments + " total comments<br/>";
+		}
+	retu +="</div></div></div>";//closes others and contentBoxLeft
 	retu += "<div class=\"imgBox\" id="+classId+"><img src="+theUrl+"  id="+picId+" onload=resizeImg(\""+picId+"\",\""+classId+"\") ></img></div></div>";//closes imgbox and contentBox)
 	document.getElementById("left").innerHTML+= retu;
 
+	$.getJSON("http://"+ipAddr+"/",{req:"topComment", id:thePost}, function(data) {
+		addTopComment(data, thePost);
+	});
+}
 
-
-	//$.getJSON("http://"+ipAddr+"/",{req:"topComment", id:thePost}, function(data) {
-	//	alert("jhon is a swag fagggggggg"+data.author);
-	//});
+function addTopComment(data, thePost){
+	document.getElementById(thePost).innerHTML+=data.comment;
 }
 
 function resizeImg(theId, parentId){
@@ -281,8 +288,8 @@ function resizeImg(theId, parentId){
 	var imgHeight = myImage.height;
 	var newWidth = Math.floor(300*imgWidth/imgHeight);
 	var myParent = document.getElementById(parentId);
-	alert(myParent);
 	myParent.style.width=newWidth;
+	myParent.style.maxWidth= "50%";
 
 
 }
@@ -295,22 +302,23 @@ function makeSelfBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, the
 	retu += "<div class=\"upDown\">";//wrapper for up/down arrows
 	retu += "<div class=\"upvote\"></div>";//closes upvote
 	retu += "<div class=\"downvote\"></div></div>";//closes downvote and upDown
-	retu += "<div class=\"title\"><p class=\"paragraphTitle\">"+theTitle + "</p>";//close titleParagraph
-	retu += "<p class=\"paragraphSubmitted\">Submitted by " + theUser + " " + timeAgo(theTime);
-	retu += "</p></div></div>";//closes title and titlebox
+	retu += "<div class=\"title\"><div class=\"paragraphTitle\">"+theTitle + "</div>";//close titleParagraph
+	retu += "<div class=\"paragraphSubmitted\">Submitted by " + theUser + " " + timeAgo(theTime);
+	retu += "</div></div></div>";//closes title and titlebox
 	retu += "<div class=\"selfOthers\">";
-	retu += "<div id="+thePost+" class=\"comment\"onclick=viewComments(this)>Total Comments:"+theNumComments+"</div>";
-	retu +="</div></div>";//closes others and contentBoxLeft
+	retu += "<div id="+thePost+" class=\"comment\"onclick=viewComments(this)>";
+		if(theNumComments == 1){
+			retu+="1 total comment<br/>";
+		}else{
+			retu+=theNumComments + " total comments<br/>";
+		}
+	retu +="</div></div></div>";//closes others and contentBoxLeft
 	//var topComment = $.getJSON("http://"+ipAddr+"/",{req:"selfText", id:thePost});
 	retu += "<div class=\"selfBox\">Here would go text for the self post</div></div>";//closes imgbox and contentBox
-	return retu;
+	
+	document.getElementById("left").innerHTML +=retu;
 
 }
-
-
-
-
-
 
 //function that will grab the posts from the python server
 //sends subReddit, sortBy to ipAddr
@@ -338,24 +346,6 @@ function loadLeft(data){
 	}
 	document.getElementById("left").innerHTML+="<button type=\"button\" onclick = loadPosts(); >click to load posts</button>";
 }
-
-function loadSelfPost(){
-
-}
-
-function loadImagePost(){
-
-}
-
-function loadLinkPost(){
-
-}
-
-
-
-
-
-
 
 /*Put all login functions down here
 *
