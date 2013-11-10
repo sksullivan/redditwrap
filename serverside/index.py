@@ -14,14 +14,39 @@ class Handler(BaseHTTPRequestHandler):
 		self.send_response(200)
 		self.send_header('Access-Control-Allow-Origin', '*')
 		self.end_headers()
-		print parse_qs(self.path[self.path.find('?')+1:])
-		if self.path=="/sub":
-			print "Submit to Reddit"
-			self.wfile.write("Submit a Reddit Link!")
-		elif self.path=="/posts":
+		params = parse_qs(self.path[self.path.find('?')+1:])
+		r = praw.Reddit(user_agent='redditwrap')
+		req = params['req'][0]
+		
+		if req == "comments":
+			submission = r.get_submission(params['url'][0])
+			self.wfile.write("yeah man we're good")
+
+		if req == "submit":
+			submissions = r.get_subreddit('test').get_hot(limit=5)
+			comment = params['c'][0]
+			submissionsList = list(submissions)
+			submissionsList[0].add_comment(comment)
+
+		elif req == "posts":
 			print "Getting Reddit Posts\n\n"
-			r = praw.Reddit(user_agent='redditwrap')
-			submissions = r.get_subreddit('funny').get_hot(limit=10)
+			sorter = params['sort'][0]
+			subreddit = params['subreddit'][0]
+			if sorter == 'hot':
+				submissions = r.get_subreddit(subreddit).get_hot(limit=15)
+			elif sorter == 'top':
+				submissions = r.get_subreddit(subreddit).get_top(limit=15)
+			elif sorter == 'new':
+				submissions = r.get_subreddit(subreddit).get_new(limit=15)
+			elif sorter == 'rising':
+				submissions = r.get_subreddit(subreddit).get_rising(limit=15)
+			elif sorter == 'controversial': 
+				submissions = r.get_subreddit(subreddit).get_controversial(limit=15)
+			elif sorter == 'gilded':
+				submissions = r.get_subreddit(subreddit).get_gilded(limit=15)
+			else:
+				submissions = r.get_subreddit(subreddit).get_hot(limit=15)
+
 			res = []
 			for post in submissions:
 				res.append({
@@ -33,9 +58,14 @@ class Handler(BaseHTTPRequestHandler):
 					'time': post.created_utc,
 					'nsfw': post.over_18
 				})
+				pprint(vars(post))
 			self.wfile.write(json.dumps(res))
-		elif self.path=="/kill":
-			sys.exit(0)
+
+		elif req == "login":
+			username = params['username'][0]
+			password = params['password'][0]
+			r.login(username, password)
+			
 
 	def do_POST(self):
 		postvars = self.parse_POST()
@@ -52,15 +82,15 @@ class Handler(BaseHTTPRequestHandler):
 			keep_blank_values=1)
 		else:
 			postvars = {}
-		self.wfile.write("plootis")
+		self.wfile.write(self.path)
 		return postvars
 
 class ThreadingHTTPServer(ThreadingMixIn, HTTPServer):
 	pass
 
 def serve_on_port(port):
-	server = ThreadingHTTPServer(("172.16.241.188",port), Handler)
+	server = ThreadingHTTPServer(('localhost',port), Handler)
 	server.serve_forever()
 
 Thread(target=serve_on_port, args=[1111]).start()
-serve_on_port(2222)
+serve_on_port(3333)
