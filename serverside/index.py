@@ -19,11 +19,8 @@ class Handler(BaseHTTPRequestHandler):
 		r = praw.Reddit(user_agent='redditwrap')
 
 		if self.path.find("/singlepost") != -1:
-			#escapedUrl = params['url'][0]
-			#unescapedUrl = #unescape the url
-			#print r.get_submission(url=unescapedUrl)
-			self.wfile.write(params['url'][0])
-			pass
+			submission = r.get_submission(params['url'][0])
+			#comments = 
 
 		if self.path.find("/sub") != -1:
 			submissions = r.get_subreddit('test').get_hot(limit=5)
@@ -33,7 +30,7 @@ class Handler(BaseHTTPRequestHandler):
 
 		elif self.path=="/posts":
 			print "Getting Reddit Posts\n\n"
-			submissions = r.get_subreddit('funny').get_hot(limit=5)
+			submissions = r.get_subreddit('funny').get_hot(limit=15)
 			res = []
 			for post in submissions:
 				res.append({
