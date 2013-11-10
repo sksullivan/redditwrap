@@ -14,14 +14,13 @@ class Handler(BaseHTTPRequestHandler):
 		self.send_response(200)
 		self.send_header('Access-Control-Allow-Origin', '*')
 		self.end_headers()
-		print parse_qs(self.path[self.path.find('?')+1:])
+		params = parse_qs(self.path[self.path.find('?')+1:])
 		if self.path=="/sub":
-			print "Submit to Reddit"
-			self.wfile.write("Submit a Reddit Link!")
+			pass
 		elif self.path=="/posts":
 			print "Getting Reddit Posts\n\n"
 			r = praw.Reddit(user_agent='redditwrap')
-			submissions = r.get_subreddit('funny').get_hot(limit=10)
+			submissions = r.get_subreddit('funny').get_hot(limit=5)
 			res = []
 			for post in submissions:
 				res.append({
@@ -34,8 +33,14 @@ class Handler(BaseHTTPRequestHandler):
 					'nsfw': post.over_18
 				})
 			self.wfile.write(json.dumps(res))
-		elif self.path=="/kill":
-			sys.exit(0)
+		elif self.path.find("/login") != -1:
+			username = params['username'][0]
+			password = params['password'][0]
+			r = praw.Reddit(user_agent='redditwrap')
+			r.login(username, password)
+			submissions = r.get_subreddit('test').get_hot(limit=5)
+			submissionsList = list(submissions)
+			submissionsList[0].add_comment('hello world!')
 
 	def do_POST(self):
 		postvars = self.parse_POST()
@@ -52,15 +57,15 @@ class Handler(BaseHTTPRequestHandler):
 			keep_blank_values=1)
 		else:
 			postvars = {}
-		self.wfile.write("plootis")
+		self.wfile.write(self.path)
 		return postvars
 
 class ThreadingHTTPServer(ThreadingMixIn, HTTPServer):
 	pass
 
 def serve_on_port(port):
-	server = ThreadingHTTPServer(("172.16.241.188",port), Handler)
+	server = ThreadingHTTPServer(("localhost",port), Handler)
 	server.serve_forever()
 
 Thread(target=serve_on_port, args=[1111]).start()
-serve_on_port(2222)
+serve_on_port(3333)
