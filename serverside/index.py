@@ -1,4 +1,5 @@
 import praw
+import socket, ssl
 from threading import Thread
 from SocketServer import ThreadingMixIn
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
@@ -15,11 +16,15 @@ class Handler(BaseHTTPRequestHandler):
 		self.send_header('Access-Control-Allow-Origin', '*')
 		self.end_headers()
 		params = parse_qs(self.path[self.path.find('?')+1:])
-		if self.path=="/sub":
-			pass
+		r = praw.Reddit(user_agent='redditwrap')
+		if self.path.find("/sub") != -1:
+			submissions = r.get_subreddit('test').get_hot(limit=5)
+			comment = params['c'][0]
+			submissionsList = list(submissions)
+			submissionsList[0].add_comment(comment)
 		elif self.path=="/posts":
 			print "Getting Reddit Posts\n\n"
-			r = praw.Reddit(user_agent='redditwrap')
+			
 			submissions = r.get_subreddit('funny').get_hot(limit=5)
 			res = []
 			for post in submissions:
@@ -38,9 +43,7 @@ class Handler(BaseHTTPRequestHandler):
 			password = params['password'][0]
 			r = praw.Reddit(user_agent='redditwrap')
 			r.login(username, password)
-			submissions = r.get_subreddit('test').get_hot(limit=5)
-			submissionsList = list(submissions)
-			submissionsList[0].add_comment('hello world!')
+			
 
 	def do_POST(self):
 		postvars = self.parse_POST()
