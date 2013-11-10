@@ -1,14 +1,19 @@
+img{
+	max-height:100%;
+	max-width:100%;
+}
 body{
-	background-color:#f7f7f8;
+	background-color:#cee3f8;
 	font-family: 'Lato',serif;
 }
 .comment{
-	width:200px;
+	width:100%;
 	height:60px;
 	background-color: #e4edf7;
 	margin:0 auto;
 	text-align:center;
 	border-radius: 8px;
+	overflow:hidden;
 }
 .comment:hover{
 	background: #5584a8; /* Old browsers */
@@ -37,23 +42,23 @@ body{
 #focus{
 	padding: 10px;
 }
-.comment{
-	margin: auto;
-	line-height: 60px;
-}
 .imgBox{
+	margin:0 auto;
 	float:right;
 	width:50%;
 	height:300px;
--	max-width:50%;
+	max-width:50%;
 	max-height:300px;
-	background-color: #333333;
+	background-color: #cee3f8;
 	border-radius:8px;
 	overflow:hidden;
 }
+<<<<<<< HEAD
 .imgBox img{
-
+	height: 300px;
 }
+=======
+>>>>>>> 1473d52be977f0e79ee1fc057ac1e84715ec1664
 .imgContentBox{
 	width:100%;
 	height:300px;
@@ -81,7 +86,7 @@ body{
 	max-height:88%;
 	height:88%;
 	width: calc(100% - 210px);
-	width:-moz-calc(100%-210px);
+	width: -moz-calc(100%-210px);
 	width: -webkit-calc(100%-210px);
 	width: -o-calc(100%-210px);
 	min-width:700px;
@@ -110,6 +115,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5584a8', end
 }
 .paragraphComment{
 	margin:0 auto;
+	overflow: hidden;
 }
 .paragraphSubmitted{
 	color:#3e3e3e;
@@ -119,13 +125,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5584a8', end
 	padding-left: 20px;
 	position: absolute;
 	bottom: 10px;
+	overflow:hidden;
 }
 .paragraphTitle{
 	color:#336699;
 	font-size: 25;
-	margin:0px;
+	margin:0 auto;
 	padding-top: 10px;
 	padding-left: 20px;
+	height:65px;
+	overflow:hidden;
 }
 #right{
 	float:right;
