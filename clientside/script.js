@@ -7,8 +7,6 @@ var ipAddr = "172.16.241.188:2222";
 /*functions to help with sidebar management go below
 *
 */
-
-
 //resizes elements on our sidebar
 function resize(elem1){
 	var elems = new Array("sort","submit","subscribe","sidebar", "switch","subreddits");
@@ -30,7 +28,6 @@ function resize(elem1){
 		}
 	}
 }
-
 //loads selected sidebar info
 function loadSide(elem1){
 	var title;
@@ -57,7 +54,6 @@ function loadSide(elem1){
 			break;
 	}
 }
-
 function loadSort(){
 	var elem1 = document.getElementById("sort");
 	var sortContent = "<div id=\"focus\">Sort by "+sortBy+"</div>";
@@ -69,7 +65,6 @@ function loadSort(){
 	sortContent += "<div id=\"s1\" onclick = sortByGild();>gilded</div>";
 	elem1.innerHTML = sortContent;
 }
-
 function sortByHot(){
 	sortBy = "hot";
 	loadSort();
@@ -157,13 +152,16 @@ function hideSide(elem1){
 
 function viewComments(elem){
 	var elemId = $(elem).attr("id");
+	$.get("http://"+ipAddr+"/",{req:"comments",sort:top, url:elemId},function(data){
+		alert("pootis: " + data);
+	});
 	alert(elemId);
 }
 
 
 
-/*functions to help display in the main window
-*everything below here should deal with the left side of the page
+/*functions below help with creation of the content boxes
+*they differentiate between imgur and self posts
 *
 *
 *
@@ -171,23 +169,37 @@ function viewComments(elem){
 
 //function for making a content box
 //currently makes generic box, nothing special ATM
-function makeContentBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, theUser, theTime){
+function makeContentBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, theUser, theTime, topComment){
 	var retu;
-	retu = "<div class=\"contentBox\">";//outtermost wrapper
-	retu += "<div class =\"contentBoxLeft\">";//wrapper for left part of post
-	retu += "<div class=\"titleBox\">";//wrapper for title, up and down
-	retu += "<div class=\"upDown\">";//wrapper for up/down arrows
-	retu += "<div class=\"upvote\"></div>";//closes upvote
-	retu += "<div class=\"downvote\"></div></div>";//closes downvote and upDown
-	retu += "<div class=\"title\"><p class=\"paragraphTitle\">"+theTitle + "</p>";//close titleParagraph
-	retu += "<p class=\"paragraphSubmitted\">Submitted by " + theUser + " " + timeAgo(theTime);
-	retu += "</p></div></div>";//closes title and titlebox
-	retu += "<div class=\"others\"></div></div>";//closes others and contentBoxLeft
-	retu += "<div class=\"imgBox\"><img src="+theUrl+"></img></div></div>";//closes imgbox and contentBox
-	//retu += "<div class=\"topComment\"><div class="imgBox">"+topComment+"</div>";
+	theUrl = checkUrl(theUrl);
+	if(isFromImgur(theUrl)){
+		retu = makeImageBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, theUser, theTime, topComment);
+	}
+	else{
+		retu = makeSelfBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, theUser, theTime);
+	}
 	return retu;
 }
 
+//functuon to fix url if from imgur
+function checkUrl(theUrl){
+	if(theUrl.indexOf("gallery") > -1){
+		return theUrl;
+	}
+	if(theUrl.length> 12){
+		if(theUrl.substring(0,12)=="http://imgur"){
+			theUrl = "http://i.imgur"+ theUrl.substring(12,theUrl.length)+ ".jpg";
+		}
+	}
+	if(theUrl.length> 13){
+		if(theUrl.substring(0,13)=="https://imgur"){
+			theUrl = "http://i.imgur"+ theUrl.substring(13,theUrl.length)+".jpg";
+		}
+	}
+	return theUrl;
+}
+
+//function for calcuating time ago posted
 function timeAgo(redTime){
 	var currentTime = new Date();
 	var offset = Math.floor(currentTime.getTime()/1000)-redTime; //difference in real time - reddits time
@@ -230,11 +242,63 @@ function timeAgo(redTime){
 	return retu;
 }
 
+function isFromImgur(theUrl){
+	if(theUrl.length >= 13)
+		if(theUrl.substring(0,14) == "http://i.imgur")
+			return true;
+	return false;
+}
+
+function makeImageBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, theUser, theTime,topComment)
+{
+	var theImage = new Image()
+	theImage.src = theUrl;
+	var retu = "<div class=\"imgContentBox\">";//outtermost wrapper
+	retu += "<div class =\"contentBoxLeft\">";//wrapper for left part of post
+	retu += "<div class=\"titleBox\">";//wrapper for title, up and down
+	retu += "<div class=\"upDown\">";//wrapper for up/down arrows
+	retu += "<div class=\"upvote\"></div>";//closes upvote
+	retu += "<div class=\"downvote\"></div></div>";//closes downvote and upDown
+	retu += "<div class=\"title\"><p class=\"paragraphTitle\">"+theTitle + "</p>";//close titleParagraph
+	retu += "<p class=\"paragraphSubmitted\">Submitted by " + theUser + " " + timeAgo(theTime);
+	retu += "</p></div></div>";//closes title and titlebox
+	retu += "<div class=\"imgOthers\">";
+	//retu += "<div id="+theUrl+" class=\"comment\"onclick=viewComments(this)>Total Comments: "+theNumComments+"</div>";
+	retu +="</div class=\"topComment\"></div>";//closes others and contentBoxLeft
+	retu += "<div class=\"imgBox\"><img src="+theUrl+"></img></div></div>";//closes imgbox and contentBox)
+	
+	return retu;
+}
+
+function makeSelfBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, theUser, theTime)
+{
+	var retu = "<div class=\"selfContentBox\">";//outtermost wrapper
+	retu += "<div class =\"contentBoxLeft\">";//wrapper for left part of post
+	retu += "<div class=\"titleBox\">";//wrapper for title, up and down
+	retu += "<div class=\"upDown\">";//wrapper for up/down arrows
+	retu += "<div class=\"upvote\"></div>";//closes upvote
+	retu += "<div class=\"downvote\"></div></div>";//closes downvote and upDown
+	retu += "<div class=\"title\"><p class=\"paragraphTitle\">"+theTitle + "</p>";//close titleParagraph
+	retu += "<p class=\"paragraphSubmitted\">Submitted by " + theUser + " " + timeAgo(theTime);
+	retu += "</p></div></div>";//closes title and titlebox
+	retu += "<div class=\"selfOthers\">";
+	//retu += "<div id="+theUrl+" class=\"comment\"onclick=viewComments(this)>Total Comments:"+theNumComments+"</div>";
+	retu +="</div></div>";//closes others and contentBoxLeft
+	retu += "<div class=\"selfBox\">Here would go text for the self post</div></div>";//closes imgbox and contentBox
+	return retu;
+
+}
+
+
+
+
+
+
 //function that will grab the posts from the python server
 //sends subReddit, sortBy to ipAddr
 function loadPosts(){
 	//var addr = ipAddr + "/posts";
-	$.getJSON("http://" + ipAddr + "/?req=posts", function(data){
+	$.getJSON("http://"+ipAddr+"/",{req:"posts", sort:sortBy, subreddit:subReddit}, function(data){
 		loadLeft(data);
 	});
 }
@@ -251,10 +315,10 @@ function loadLeft(data){
 		var theUser = data[i].user;
 		var theSubreddit = data[i].subreddit;
 		var theTime = data[i].time;
-
-		pootis += makeContentBox(theTitle, theUrl, theNumComments,theSubreddit, isNSFW, theUser,  theTime);
+		var topComment = data[i].topComment;
+		pootis += makeContentBox(theTitle, theUrl, theNumComments,theSubreddit, isNSFW, theUser, theTime,topComment);
 	}
-	pootis = "<button type=\"button\" onclick = loadPosts(); >click to load posts</button>" + pootis;
+	pootis += "<button type=\"button\" onclick = loadPosts(); >click to load posts</button>";
 	document.getElementById("left").innerHTML = pootis;
 }
 
@@ -283,5 +347,8 @@ function loadLinkPost(){
 *
 *
 */
+
+
+
 
 

@@ -4,33 +4,18 @@
 <script src = "jquery.js"></script>
 <script src = "script.js"></script>
 <link rel="stylesheet" type="text/css" href="css.css">
-<link href='http://fonts.googleapis.com/css?family=Noticia+Text' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:100,300' rel='stylesheet' type='text/css'>
+
 </head>
 <body>
 	<div id = "top"></div>
 
 	<div id = "main">
 		<div id = "left">
-			<button type="button" onclick = loadPosts(); >click to load posts</button>
-			<div class="contentBox">
-				<div class = "contentBoxLeft">
-					<div class="titleBox">
-						<div class="upDown">
-							<div class="upvote"></div>
-							<div class="downvote"></div>
-						</div>
-						<div class = "title">
-
-						</div>
-					</div>
-					<div class="others"> 
-							
-					</div>
-				</div>
-				<div class="topComment"></div>
-				<div class="imgBox"></div>
-			</div>
+			<button type="button" onClick = loadPosts(); >click to load posts</button>
+			
 			<div class=contentBox>
 				<div class =contentBoxLeft>
 					<div class=titleBox>
@@ -47,6 +32,7 @@
 						<div id="123123123" class="comment" onclick=viewComments(this)>Comments</div>
 					</div>
 				</div>
+					<!--<div class=topComment></div>-->
 					<div class=imgBox><img src=a.png></img></div></div>
 
 
