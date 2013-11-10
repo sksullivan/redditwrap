@@ -171,7 +171,7 @@ function viewComments(elem){
 
 //function for making a content box
 //currently makes generic box, nothing special ATM
-function makeContentBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, theUser, theTime){
+function makeContentBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, theUser, theTime, topComment){
 	var retu;
 	retu = "<div class=\"contentBox\">";//outtermost wrapper
 	retu += "<div class =\"contentBoxLeft\">";//wrapper for left part of post
@@ -184,6 +184,7 @@ function makeContentBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, 
 	retu += "</p></div></div>";//closes title and titlebox
 	retu += "<div class=\"others\"></div></div>";//closes others and contentBoxLeft
 	retu += "<div class=\"imgBox\"><img src="+theUrl+"></img></div></div>";//closes imgbox and contentBox
+	retu += "<div class=\"topComment\"><div class="imgBox">"+topComment+"</div>";
 	return retu;
 }
 
