@@ -1,5 +1,4 @@
 import praw
-import socket, ssl
 from threading import Thread
 from SocketServer import ThreadingMixIn
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
@@ -31,7 +30,23 @@ class Handler(BaseHTTPRequestHandler):
 
 		elif req == "posts":
 			print "Getting Reddit Posts\n\n"
-			submissions = r.get_subreddit('funny').get_hot(limit=15)
+			sorter = params['sort'][0]
+			subreddit = params['subreddit'][0]
+			if sorter == 'hot':
+				submissions = r.get_subreddit(subreddit).get_hot(limit=15)
+			elif sorter == 'top':
+				submissions = r.get_subreddit(subreddit).get_top(limit=15)
+			elif sorter == 'new':
+				submissions = r.get_subreddit(subreddit).get_new(limit=15)
+			elif sorter == 'rising':
+				submissions = r.get_subreddit(subreddit).get_rising(limit=15)
+			elif sorter == 'controversial': 
+				submissions = r.get_subreddit(subreddit).get_controversial(limit=15)
+			elif sorter == 'gilded':
+				submissions = r.get_subreddit(subreddit).get_gilded(limit=15)
+			else:
+				submissions = r.get_subreddit(subreddit).get_hot(limit=15)
+
 			res = []
 			for post in submissions:
 				res.append({
@@ -74,8 +89,8 @@ class ThreadingHTTPServer(ThreadingMixIn, HTTPServer):
 	pass
 
 def serve_on_port(port):
-	server = ThreadingHTTPServer(("172.16.241.188",port), Handler)
+	server = ThreadingHTTPServer(('localhost',port), Handler)
 	server.serve_forever()
 
 Thread(target=serve_on_port, args=[1111]).start()
-serve_on_port(2222)
+serve_on_port(3333)
