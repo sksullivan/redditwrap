@@ -17,18 +17,19 @@ class Handler(BaseHTTPRequestHandler):
 		self.end_headers()
 		params = parse_qs(self.path[self.path.find('?')+1:])
 		r = praw.Reddit(user_agent='redditwrap')
-
-		if self.path.find("/singlepost") != -1:
+		req = params['req'][0]
+		
+		if req == "comments":
 			submission = r.get_submission(params['url'][0])
-			#comments = 
+			self.wfile.write("yeah man we're good")
 
-		if self.path.find("/sub") != -1:
+		if req == "submit":
 			submissions = r.get_subreddit('test').get_hot(limit=5)
 			comment = params['c'][0]
 			submissionsList = list(submissions)
 			submissionsList[0].add_comment(comment)
 
-		elif self.path=="/posts":
+		elif req == "posts":
 			print "Getting Reddit Posts\n\n"
 			submissions = r.get_subreddit('funny').get_hot(limit=15)
 			res = []
@@ -45,7 +46,7 @@ class Handler(BaseHTTPRequestHandler):
 				pprint(vars(post))
 			self.wfile.write(json.dumps(res))
 
-		elif self.path.find("/login") != -1:
+		elif req == "login":
 			username = params['username'][0]
 			password = params['password'][0]
 			r.login(username, password)
