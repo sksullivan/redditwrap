@@ -21,7 +21,7 @@ class Handler(BaseHTTPRequestHandler):
 		elif self.path=="/posts":
 			print "Getting Reddit Posts\n\n"
 			r = praw.Reddit(user_agent='redditwrap')
-			submissions = r.get_subreddit('funny').get_hot(limit=5)
+			submissions = r.get_subreddit('funny').get_hot(limit=10)
 			res = []
 			for post in submissions:
 				res.append({
