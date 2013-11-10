@@ -1,4 +1,5 @@
 import praw
+import socket, ssl
 from threading import Thread
 from SocketServer import ThreadingMixIn
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
@@ -7,7 +8,6 @@ from cgi import parse_header, parse_multipart
 import sys
 from pprint import pprint
 import json
-import 
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -17,11 +17,19 @@ class Handler(BaseHTTPRequestHandler):
 		self.end_headers()
 		params = parse_qs(self.path[self.path.find('?')+1:])
 		r = praw.Reddit(user_agent='redditwrap')
+		
 		if self.path=="/singlepost":
 			escapedUrl = params['url'][0]
 			unescapedUrl = #unescape the url
 			print r.get_submission(url=unescapedUrl)
 			pass
+
+		if self.path.find("/sub") != -1:
+			submissions = r.get_subreddit('test').get_hot(limit=5)
+			comment = params['c'][0]
+			submissionsList = list(submissions)
+			submissionsList[0].add_comment(comment)
+
 		elif self.path=="/posts":
 			print "Getting Reddit Posts\n\n"
 			submissions = r.get_subreddit('funny').get_hot(limit=5)
@@ -38,15 +46,12 @@ class Handler(BaseHTTPRequestHandler):
 				})
 				pprint(vars(post))
 			self.wfile.write(json.dumps(res))
-		elif self.path=="/kill":
-			sys.exit(0)
+
 		elif self.path.find("/login") != -1:
 			username = params['username'][0]
 			password = params['password'][0]
 			r.login(username, password)
-			submissions = r.get_subreddit('test').get_hot(limit=5)
-			submissionsList = list(submissions)
-			submissionsList[0].add_comment('hello world!')
+			
 
 	def do_POST(self):
 		postvars = self.parse_POST()
