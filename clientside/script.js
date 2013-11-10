@@ -169,16 +169,14 @@ function viewComments(elem){
 
 //function for making a content box
 //currently makes generic box, nothing special ATM
-function makeContentBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, theUser, theTime){
-	var retu;
+function makeContentBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, theUser, theTime, thePost){
 	theUrl = checkUrl(theUrl);
 	if(isFromImgur(theUrl)){
-		retu = makeImageBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, theUser, theTime);
+		makeImageBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, theUser, theTime, thePost);
 	}
 	else{
-		retu = makeSelfBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, theUser, theTime);
+		makeSelfBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, theUser, theTime, thePost);
 	}
-	return retu;
 }
 
 //functuon to fix url if from imgur
@@ -249,10 +247,11 @@ function isFromImgur(theUrl){
 	return false;
 }
 
-function makeImageBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, theUser, theTime)
+function makeImageBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, theUser, theTime, thePost)
 {
-	var theImage = new Image()
-	theImage.src = theUrl;
+
+	var picId = thePost + "img1";
+	var classId = thePost + "img";
 	var retu = "<div class=\"imgContentBox\">";//outtermost wrapper
 	retu += "<div class =\"contentBoxLeft\">";//wrapper for left part of post
 	retu += "<div class=\"titleBox\">";//wrapper for title, up and down
@@ -263,13 +262,32 @@ function makeImageBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, th
 	retu += "<p class=\"paragraphSubmitted\">Submitted by " + theUser + " " + timeAgo(theTime);
 	retu += "</p></div></div>";//closes title and titlebox
 	retu += "<div class=\"imgOthers\">";
-	retu += "<div id="+theUrl+" class=\"comment\"onclick=viewComments(this)>Total Comments:"+theNumComments+"</div>";
+	retu += "<div id="+thePost+" class=\"comment\"onclick=viewComments(this)>Total Comments: "+theNumComments+"</div>";
 	retu +="</div></div>";//closes others and contentBoxLeft
-	retu += "<div class=\"imgBox\"><img src="+theUrl+"></img></div></div>";//closes imgbox and contentBox)
-	return retu;
+	retu += "<div class=\"imgBox\" id="+classId+"><img src="+theUrl+"  id="+picId+" onload=resizeImg(\""+picId+"\",\""+classId+"\") ></img></div></div>";//closes imgbox and contentBox)
+	document.getElementById("left").innerHTML+= retu;
+
+
+
+	//$.getJSON("http://"+ipAddr+"/",{req:"topComment", id:thePost}, function(data) {
+	//	alert("jhon is a swag fagggggggg"+data.author);
+	//});
 }
 
-function makeSelfBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, theUser, theTime)
+function resizeImg(theId, parentId){
+	var myImage = new Image();
+	myImage.src = $("#"+theId).attr("src");
+	var imgWidth = myImage.width;
+	var imgHeight = myImage.height;
+	var newWidth = Math.floor(300*imgWidth/imgHeight);
+	var myParent = document.getElementById(parentId);
+	alert(myParent);
+	myParent.style.width=newWidth;
+
+
+}
+
+function makeSelfBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, theUser, theTime, thePost)
 {
 	var retu = "<div class=\"selfContentBox\">";//outtermost wrapper
 	retu += "<div class =\"contentBoxLeft\">";//wrapper for left part of post
@@ -281,8 +299,9 @@ function makeSelfBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, the
 	retu += "<p class=\"paragraphSubmitted\">Submitted by " + theUser + " " + timeAgo(theTime);
 	retu += "</p></div></div>";//closes title and titlebox
 	retu += "<div class=\"selfOthers\">";
-	retu += "<div id="+theUrl+" class=\"comment\"onclick=viewComments(this)>Total Comments:"+theNumComments+"</div>";
+	retu += "<div id="+thePost+" class=\"comment\"onclick=viewComments(this)>Total Comments:"+theNumComments+"</div>";
 	retu +="</div></div>";//closes others and contentBoxLeft
+	//var topComment = $.getJSON("http://"+ipAddr+"/",{req:"selfText", id:thePost});
 	retu += "<div class=\"selfBox\">Here would go text for the self post</div></div>";//closes imgbox and contentBox
 	return retu;
 
@@ -305,7 +324,7 @@ function loadPosts(){
 //function that will parse JSON data
 //then it creates the content boxes
 function loadLeft(data){
-	var pootis = " ";
+	document.getElementById("left").innerHTML=" ";
 	for(var i = 0; i < data.length; i++){
 		var theTitle=data[i].title;
 		var theUrl = data[i].url;
@@ -314,10 +333,10 @@ function loadLeft(data){
 		var theUser = data[i].user;
 		var theSubreddit = data[i].subreddit;
 		var theTime = data[i].time;
-		pootis += makeContentBox(theTitle, theUrl, theNumComments,theSubreddit, isNSFW, theUser,  theTime);
+		var thePost = data[i].id;
+		makeContentBox(theTitle, theUrl, theNumComments,theSubreddit, isNSFW, theUser,  theTime, thePost);
 	}
-	pootis += "<button type=\"button\" onclick = loadPosts(); >click to load posts</button>";
-	document.getElementById("left").innerHTML = pootis;
+	document.getElementById("left").innerHTML+="<button type=\"button\" onclick = loadPosts(); >click to load posts</button>";
 }
 
 function loadSelfPost(){
