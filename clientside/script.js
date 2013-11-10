@@ -172,9 +172,9 @@ function makeContentBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, 
 	retu += "<div class=\"upDown\">";//wrapper for up/down arrows
 	retu += "<div class=\"upvote\"></div>";//closes upvote
 	retu += "<div class=\"downvote\"></div></div>";//closes downvote and upDown
-	retu += "<div class=\"title\">"+theTitle + "<br/>";
-	retu += "Submitted by " + theUser + " " + timeAgo(theTime);
-	retu += "</div></div>";//closes title and titlebox
+	retu += "<div class=\"title\"><p class=\"paragraphTitle\">"+theTitle + "</p>";//close titleParagraph
+	retu += "<p class=\"paragraphSubmitted\">Submitted by " + theUser + " " + timeAgo(theTime);
+	retu += "</p></div></div>";//closes title and titlebox
 	retu += "<div class=\"others\"></div></div>";//closes others and contentBoxLeft
 	retu += "<div class=\"imgBox\"><img src="+theUrl+"></img></div></div>";//closes imgbox and contentBox
 	return retu;
@@ -201,7 +201,23 @@ function timeAgo(redTime){
 				retu += " hour ago";
 			else
 				retu += " hours ago";
-
+	}
+	else if(offset < 60*60*24*30){ //days
+		offset = Math.floor(offset/60/60/24);
+		retu = offset;
+			if(offset == 1)
+				retu += " month ago";
+			else
+				retu += " months ago";
+	}
+	else{
+		offset = Math.floor(offset/60/60/24/30);
+		retu = "over " +offset;
+			if(offset == 1){
+				retu += " year ago";
+			}
+			else
+				retu += " years ago";
 	}
 	return retu;
 }
@@ -245,3 +261,19 @@ function loadImagePost(){
 function loadLinkPost(){
 
 }
+
+
+
+
+
+
+
+/*Put all login functions down here
+*
+*
+*
+*
+*
+*/
+
+
