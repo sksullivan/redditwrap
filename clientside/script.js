@@ -1,8 +1,15 @@
-var sortBy = "top"
-var ipAddr = "172.16.241.188:2222"
+//initial variables, pretty self explainatory
+var sortBy = "top";
+var subReddit = "frontpage";
+var ipAddr = "172.16.241.188:2222";
 
 
-//functions to help with sidebar management
+/*functions to help with sidebar management go below
+*
+*/
+
+
+//resizes elements on our sidebar
 function resize(elem1){
 	var elems = new Array("sort","submit","subscribe","sidebar", "switch","subreddits");
 	for(var i = 0; i < elems.length; i++){
@@ -23,6 +30,8 @@ function resize(elem1){
 		}
 	}
 }
+
+//loads selected sidebar info
 function loadSide(elem1){
 	var title;
 	switch (elem1)
@@ -116,6 +125,8 @@ function loadSubreddits(){
 	elem1.innerHTML = subredditContent;
 }
 
+
+//function to hide sidebars that are unused
 function hideSide(elem1){
 	var title;
 	switch (elem1)
@@ -144,15 +155,43 @@ function hideSide(elem1){
 
 
 
-function getFrontPage(){
-	$.get("http://172.16.96.184:2222/posts", function(data){
-		loadLeft2(data);
-	});
+/*functions to help display in the main window
+*everything below here should deal with the left side of the page
+*
+*
+*
+*/
+
+//function for making a content box
+//currently makes generic box, nothing special ATM
+function makeContentBox(){
+	var retu;
+	retu = "<div class=\"contentBox\">";
+	retu += "<div class =\"contentBoxLeft\">";
+	retu += "<div class=\"titleBox\">";
+	retu += "<div class=\"upvote\"></div>";
+	retu += "<div class=\"downvote\"></div></div>";
+	retu += "<div class=\"others\"></div></div>";
+	retu += "<div class=\"imgBox\"></div></div>";
+	return retu;
 }
 
-function loadLeft2(pootis){
-	document.getElementById("left").innerHTML += pootis;
+//function that will grab the posts from the python server
+//sends subReddit, sortBy to ipAddr
+function loadPosts(){
+	$.getJSON
 }
+
+
+function loadLeft(){
+	var title = "Welcome to reddit! <br/>";;
+	for(var i = 0; i < 25; i++){
+		title += makeContentBox();
+	}
+	document.getElementById("left").innerHTML = title;
+
+}
+
 
 function loadSelfPost(){
 
@@ -164,34 +203,4 @@ function loadImagePost(){
 
 function loadLinkPost(){
 
-}
-
-
-//functions to help display in the main window
-function makeContentBar()
-{
-	var displayArea = document.getElementById("left");
-}
-
-function makeContentBox(){
-	var retu
-	retu = "<div class=\"contentBox\">";
-	retu += "<div class =\"contentBoxLeft\">";
-	retu += "<div class=\"titleBox\">";
-	retu += "<div class=\"upvote\"></div>";
-	retu += "<div class=\"downvote\"></div></div>";
-	retu += "<div class=\"others\"></div></div>";
-	retu += "<div class=\"imgBox\"></div></div>";
-	return retu;
-}
-
-
-
-
-function loadLeft(){
-	var title = "Welcome to reddit! <br/>";;
-	for(var i = 0; i < 25; i++){
-		title += makeContentBox();
-	}
-	document.getElementById("left").innerHTML = title;
 }
