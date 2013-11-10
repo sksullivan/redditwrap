@@ -1,0 +1,42 @@
+<!DCOCTYPE html>
+<html>
+<head>
+<script src = "jquery.js"></script>
+<script src = "script.js"></script>
+<link rel="stylesheet" type="text/css" href="css.css">
+</head>
+<body>
+	<div id = "top"></div>
+
+	<div id = "main">
+		<div id = "left">
+			<button type="button" onclick = loadLeft(); >click me!</button>
+			<div class="contentBox">
+				<div class = "contentBoxLeft">
+					<div class="titleBox">
+						<div class="upvote"></div>
+						<div class="downvote"></div>
+					</div>
+					<div class="others"></div>
+				</div>
+				<div class="imgBox">
+
+				</div>
+			</div>
+
+
+		</div>
+
+
+		<div id = "right">
+			<div onclick=resize("sort"); id = "sort" class="min"> Sort by top </div>
+			<div onclick=resize("submit"); id = "submit" class="min"> Submit a link or post</div>
+			<div onclick=resize("subscribe"); id = "subscribe" class="min"> Subscribe </div>
+			<div onclick=resize("sidebar"); id = "sidebar" class="min"> Sidebar </div>
+			<div onclick=resize("switch"); id = "switch" class="min">Users </div>	
+			<div onclick=resize("subreddits"); id = "subreddits" class="max">Subreddits </div>
+		</div>
+	</div>
+	<div></div>
+</body>
+<html>
