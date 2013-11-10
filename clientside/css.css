@@ -108,16 +108,17 @@ body{
 	padding: 10px;
 }
 .topComment{
-	width: 160px;
-	height: 160px;
+	width: 150px;
+	height: 150px;
 	background-color: red;
 	float: left;
 }
 .imgBox{
 	float:right;
-
-	width: 160px;
-	height: 160px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	width: 140px;
+	height: 140px;
 }
 .imgBox img{
 	width: 160px;
