@@ -5,9 +5,9 @@ from SocketServer import ThreadingMixIn
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 from urlparse import parse_qs,urlparse
 from cgi import parse_header, parse_multipart
-import sys
 from pprint import pprint
 import json
+import urllib2
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -16,7 +16,7 @@ class Handler(BaseHTTPRequestHandler):
 		self.send_header('Access-Control-Allow-Origin', '*')
 		self.end_headers()
 		params = parse_qs(self.path[self.path.find('?')+1:])
-		r = praw.Reddit(user_agent='redditwrap, a simple Reddit UI wrapper. v1.0')
+		r = praw.Reddit(user_agent='redditwrap, a simple Reddit UI wrapper. v2.0')
 		if len(params) == 0:
 			return
 		req = params['req'][0]
@@ -32,17 +32,31 @@ class Handler(BaseHTTPRequestHandler):
 			self.wfile.write(json.dumps(comments))
 
 		if req == "rawComments":
-			self.wfile.write(r.get_submission(submission_id='1qacov'))
+			res = []
+			for comment in r.get_submission(submission_id='1qacov').comments:
+				res.append(json.dumps(str(comment)))
+			self.wfile.write(res)
 
 		elif req == "submit":
 			submissions = r.get_subreddit('test').get_hot(limit=5)
-			comment = params['c'][0]
+			modhash = params['modhash'][0]
+			user = params['user'][0]
+			r._authentication = True
+			r.modhash = modhash
+			r.user = r.get_redditor(user)
+			pprint(vars(r))
 			submissionsList = list(submissions)
-			submissionsList[0].add_comment(comment)
+			submissionsList[0].add_comment("POOOOOOTIS")
 
 		elif req == "posts":
 			print "Getting Reddit Posts"
-			submissions = r.get_subreddit('funny').get_hot(limit=25)
+			#sort = params['sort'][0]
+			sub = params['sub'][0]
+			#limit = params['limit'][0]
+			if sub != "front":
+				submissions = r.get_subreddit(sub).get_hot(limit=10)
+			else:
+				submissions = r.get_front_page()
 			res = []
 			for post in submissions:
 				res.append({
@@ -79,7 +93,7 @@ class Handler(BaseHTTPRequestHandler):
 			username = postvars['usr'][0]
 			password = postvars['pwd'][0]
 			r.login(username, password)
-			self.wfile.write("Logged in!")
+			self.wfile.write(json.dumps(r.modhash))
 		else:
 			pass
 
