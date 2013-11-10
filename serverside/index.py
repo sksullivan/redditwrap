@@ -1,5 +1,5 @@
 import praw
-import socket, ssl
+#import socket, ssl
 from threading import Thread
 from SocketServer import ThreadingMixIn
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
@@ -7,7 +7,6 @@ from urlparse import parse_qs,urlparse
 from cgi import parse_header, parse_multipart
 from pprint import pprint
 import json
-import urllib2
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -16,7 +15,7 @@ class Handler(BaseHTTPRequestHandler):
 		self.send_header('Access-Control-Allow-Origin', '*')
 		self.end_headers()
 		params = parse_qs(self.path[self.path.find('?')+1:])
-		r = praw.Reddit(user_agent='redditwrap, a simple Reddit UI wrapper. v2.0')
+		r = praw.Reddit(user_agent='redditwrap, a simple Reddit UI wrapper. v1.0')
 		if len(params) == 0:
 			return
 		req = params['req'][0]
@@ -45,18 +44,32 @@ class Handler(BaseHTTPRequestHandler):
 			r.modhash = modhash
 			r.user = r.get_redditor(user)
 			pprint(vars(r))
+			comment = params['c'][0]
 			submissionsList = list(submissions)
-			submissionsList[0].add_comment("POOOOOOTIS")
+			submissionsList[0].add_comment(comment)
 
 		elif req == "posts":
 			print "Getting Reddit Posts"
-			#sort = params['sort'][0]
 			sub = params['sub'][0]
-			#limit = params['limit'][0]
-			if sub != "front":
-				submissions = r.get_subreddit(sub).get_hot(limit=10)
-			else:
+			sorter = params['sort'][0]
+			lim = params['limit'][0]
+			if sub == "front":
 				submissions = r.get_front_page()
+			else:
+				if sorter == 'hot':
+					submissions = r.get_subreddit(sub).get_hot(limit=lim)
+				elif sorter == 'top':
+					submissions = r.get_subreddit(sub).get_top(limit=lim)
+				elif sorter == 'new':
+					submissions = r.get_subreddit(sub).get_new(limit=lim)
+				elif sorter == 'controversial': 
+					submissions = r.get_subreddit(sub).get_controversial(limit=lim)
+				elif sorter == 'gilded':
+					submissions = r.get_subreddit(sub).get_gilded(limit=lim)
+				elif sorter == 'rising':
+					submissions = r.get_subreddit(sub).get_rising(limit=lim)
+				else:
+					submissions = r.get_subreddit(sub).get_hot(limit=lim)
 			res = []
 			for post in submissions:
 				res.append({
@@ -110,7 +123,7 @@ class ThreadingHTTPServer(ThreadingMixIn, HTTPServer):
 	pass
 
 def serve_on_port(port):
-	server = ThreadingHTTPServer(("172.16.241.188",port), Handler)
+	server = ThreadingHTTPServer(("172.16.113.241",port), Handler)
 	#server = ThreadingHTTPServer(("localhost",port), Handler)
 	server.serve_forever()
 
