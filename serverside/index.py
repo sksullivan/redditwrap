@@ -80,7 +80,7 @@ class Handler(BaseHTTPRequestHandler):
 			password = postvars['pwd'][0]
 			r.login(username, password)
 			self.wfile.write("Logged in!")
-		else
+		else:
 			pass
 
 	def getComments(self,holder,comments,level):
