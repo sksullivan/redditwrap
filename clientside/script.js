@@ -263,7 +263,7 @@ function makeImageBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, th
 	retu += "<p class=\"paragraphSubmitted\">Submitted by " + theUser + " " + timeAgo(theTime);
 	retu += "</p></div></div>";//closes title and titlebox
 	retu += "<div class=\"imgOthers\">";
-	retu += "<div id="+theUrl+" class=\"comment\"onclick=viewComments(this)>Total Comments:"+theNumComments+"</div>";
+	retu += "<div id="+theUrl+" class=\"comment\"onclick=viewComments(this)>Total Comments: "+theNumComments+"</div>";
 	retu +="</div></div>";//closes others and contentBoxLeft
 	retu += "<div class=\"imgBox\"><img src="+theUrl+"></img></div></div>";//closes imgbox and contentBox)
 	return retu;
