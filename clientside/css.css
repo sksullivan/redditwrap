@@ -37,6 +37,10 @@ body{
 #focus{
 	padding: 10px;
 }
+.comment{
+	margin: auto;
+	line-height: 60px;
+}
 .imgBox{
 	float:right;
 	width:50%;
