@@ -1,7 +1,12 @@
 //initial variables, pretty self explainatory
 var sortBy = "top";
-var subReddit = "frontpage";
-var ipAddr = "172.16.241.188:2222";
+var subReddit = "front";
+var ipAddr = "172.16.113.241:2222";
+
+$(document).ready(function () {
+	loadPosts();
+	resize('subreddits');
+});
 
 
 /*functions to help with sidebar management go below
@@ -324,7 +329,7 @@ function makeSelfBox(theTitle, theUrl, theNumComments, theSubreddit, isNSFW, the
 //sends subReddit, sortBy to ipAddr
 function loadPosts(){
 	//var addr = ipAddr + "/posts";
-	$.getJSON("http://"+ipAddr+"/",{req:"posts", sort:sortBy, subreddit:subReddit}, function(data){
+	$.getJSON("http://"+ipAddr+"/",{req:"posts", sort:sortBy, sub:subReddit, limit:15}, function(data){
 		loadLeft(data);
 	});
 }
